@@ -18,6 +18,12 @@ public class BtDemo
 		
 		//max Depth of the tree
 		System.out.println("Depth: "+bst.maxDepth(root));
+		
+		//All leaf Nodes
+		ArrayList<Integer> list =new ArrayList<>();
+		bst.getLeaveNodes(root,list);
+		
+		System.out.println(list);
 	}
 	
 	class Node
@@ -68,6 +74,19 @@ public class BtDemo
 			int right = maxDepth(root.right);
 	
 			return (1+Math.max(left,right));
+		}
+		
+		public ArrayList<Integer> getLeaveNodes(Node root,ArrayList<Integer> list){
+			if(root.left == null && root.right == null)
+				list.add(root.data);
+			
+			if(root.left != null)
+				getLeaveNodes(root.left,list);
+			
+			if(root.right != null)
+				getLeaveNodes(root.right,list);
+			
+			return list;
 		}
 	}
 }
