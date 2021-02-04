@@ -18,8 +18,6 @@ public class BtDemo
 		
 		//max Depth of the tree
 		System.out.println("Depth: "+bst.maxDepth(root));
-				
-		longestCommonPrefix()
 	}
 	
 	class Node
