@@ -24,6 +24,8 @@ public class BtDemo
 		bst.getLeaveNodes(root,list);
 		
 		System.out.println(list);
+		
+		bst.levelsUsingStack(root);
 	}
 	
 	class Node
@@ -87,6 +89,28 @@ public class BtDemo
 				getLeaveNodes(root.right,list);
 			
 			return list;
+		}
+		
+		void levelsUsingStack(Node root)
+		{
+			if(root == null)
+				return;
+				
+			Queue<Node> q = new LinkedList<>();
+			q.add(root);
+			
+			while(!q.isEmpty())
+			{
+				Node temp = q.poll();
+				
+				if(temp.left != null)
+					q.add(temp.left);
+				
+				if(temp.right != null)
+					q.add(temp.right);
+				
+				System.out.print(temp.data+" ");			
+			}
 		}
 	}
 }
