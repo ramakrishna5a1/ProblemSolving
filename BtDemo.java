@@ -1,3 +1,6 @@
+//No package
+import java.util.*;
+
 public class BtDemo
 {
 	public static void main(String args[])
@@ -8,8 +11,7 @@ public class BtDemo
 		BtDemo.BinarySearchTree bst =bt.new BinarySearchTree();
 		
 		//inserting data into tree
-		int[] data = {1,2};
-		
+		int[] data = {3,0,4,2,1};
 		for(int i=0;i<data.length;i++)
 			root = bst.insert(root,data[i]);
 		
@@ -17,15 +19,22 @@ public class BtDemo
 		bst.display(root);
 		
 		//max Depth of the tree
-		System.out.println("Depth: "+bst.maxDepth(root));
+		System.out.println("\nDepth: "+bst.maxDepth(root));
 		
 		//All leaf Nodes
 		ArrayList<Integer> list =new ArrayList<>();
-		bst.getLeaveNodes(root,list);
-		
+		bst.getLeaveNodes(root,list);	
 		System.out.println(list);
 		
+		//Level by level Nodes
+		System.out.println();
 		bst.levelsUsingStack(root);
+		
+		//Array to BST
+		Arrays.sort(data);
+		Node arrHead = bst.arrayToTree(data,0,data.length-1);
+		System.out.println();
+		bst.display(arrHead);
 	}
 	
 	class Node
@@ -46,7 +55,6 @@ public class BtDemo
 		Node insert(Node root,int data)
 		{
 			Node newNode = new Node(data);
-
 			if(root == null)
 				return newNode;
 			
@@ -62,7 +70,7 @@ public class BtDemo
 		{
 			if(root != null){
 				display(root.left);
-				System.out.println(root.data);
+				System.out.print(root.data+" ");
 				display(root.right);
 			}
 		}
@@ -76,6 +84,23 @@ public class BtDemo
 			int right = maxDepth(root.right);
 	
 			return (1+Math.max(left,right));
+		}
+		ArrayList<Integer> diagonal = null;
+		
+		public void diagonalTraversal(Node root,int path,HashMap<Integer,ArrayList<Integer>> map){
+			if(root == null)
+				return;
+			
+			diagonalTraversal(root.left,path+1,map);
+		
+			if(map.containsKey(root.data)){
+				diagonal = map.get(root.data);		
+			}else{
+				diagonal = new ArrayList<>();	
+			}	
+			
+			map.put(root.data,diagonal);			
+			diagonalTraversal(root.left,path,map);
 		}
 		
 		public ArrayList<Integer> getLeaveNodes(Node root,ArrayList<Integer> list){
@@ -111,6 +136,23 @@ public class BtDemo
 				
 				System.out.print(temp.data+" ");			
 			}
+		}
+		
+		/*
+			Sorted array to binary search tree
+		*/
+		public Node arrayToTree(int[] arr,int left,int right)
+		{
+			if(left>right)
+				return null;  
+			
+			int mid = (left+right)/2;
+			Node new_node = new Node(arr[mid]);
+
+			new_node.left = arrayToTree(arr,left,mid-1);
+			new_node.right = arrayToTree(arr,mid+1,right);			
+			
+			return new_node;
 		}
 	}
 }
