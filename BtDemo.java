@@ -35,6 +35,13 @@ public class BtDemo
 		Node arrHead = bst.arrayToTree(data,0,data.length-1);
 		System.out.println();
 		bst.display(arrHead);
+		
+		//Top view of binary tree
+		bst.topViewBinary(root,0,0);
+		
+		for(Map.Entry<Integer,Integer[]> singleNode : bst.top.entrySet()){
+          		System.out.print(singleNode.getValue()[0]+" ");
+		}
 	}
 	
 	class Node
@@ -154,5 +161,37 @@ public class BtDemo
 			
 			return new_node;
 		}
+		
+				Map<Integer,Integer[]> top=new TreeMap<>();
+		Integer[] val_level=null;
+		
+		//left root right
+		public void topViewBinary(Node root,int level,int hDist)
+		{
+			if(root == null)
+				return;
+			
+			if(top.containsKey(hDist))
+			{
+				val_level = top.get(hDist);
+				
+				//current Level comparing with the exsiting level
+				if(level<val_level[1])
+				{
+					//if it is less update val_level with new one
+					val_level = {root.data,level};
+					
+					val_level[0] = root.data;
+					val_level[1] = level;
+				}	
+			}			
+			else
+				val_level = new Integer[]{root.data,level};
+			
+			top.put(hDist,val_level);	
+			
+            		topViewBinary(root.left,level+1,hDist-1);
+            		topViewBinary(root.right,level+1,hDist+1);			
+		}	
 	}
 }
