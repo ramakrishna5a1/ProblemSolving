@@ -11,16 +11,42 @@ public class HeapDemo
 	
 	public static void main(String args[]){
 		HeapDemo hp=new HeapDemo();
-		int[] ar = new int[]{1};	
+		int[] ar = new int[]{1,2,3,4};	
 		
 		for(int i=0;i<ar.length;i++)
 			hp.insert(ar[i]);
-		
+		hp.display();
 		hp.heapSort();
 		//hp.deleteMin();
 		
 		hp.display();
 	}
+
+	private void iterativeHeapDown(int parent){
+		int small = parent,l = 2*parent+1,r = 2*parent+2;
+		
+		while(l <= index || r <= index){
+			if(l <= index && heap[small] > heap[l])
+				small = l;				
+				
+			if(r <= index && heap[small] > heap[r])
+				small = r;					
+			
+			if(small != parent){
+				int temp = heap[small];
+				heap[small] = heap[parent];
+				heap[parent] = temp;				
+			
+			}else
+				break;
+			
+			parent = small;
+			
+			if(l < index) l = 2*parent+1;
+			if(r < index) r = 2*parent+2;
+		}	
+	}	
+	
 	private void heapSort(){
 		int temp = index;
 		
@@ -30,8 +56,8 @@ public class HeapDemo
 			heap[0] = heap[index];
 			heap[index] = min;
 			index--;
-			
-			heapifyDown(0);
+			iterativeHeapDown(0);
+			//heapifyDown(0);
 		}
 		
 		index = temp;
@@ -77,7 +103,7 @@ public class HeapDemo
 		int r = getRightChild(i);
 		int small = i;
 		
-		if(l <= index && heap[small] > heap[l])
+		if(l<= index && heap[small] > heap[l])
 			small = l;
 		if(r <= index && heap[small] > heap[r])
 			small = r;
