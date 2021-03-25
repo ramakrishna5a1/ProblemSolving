@@ -111,14 +111,13 @@ public class BtDemo
 		}
 		
 		public ArrayList<Integer> getLeaveNodes(Node root,ArrayList<Integer> list){
+			if(root == null) return list;
+			
 			if(root.left == null && root.right == null)
 				list.add(root.data);
 			
-			if(root.left != null)
-				getLeaveNodes(root.left,list);
-			
-			if(root.right != null)
-				getLeaveNodes(root.right,list);
+			getLeaveNodes(root.left,list);
+			getLeaveNodes(root.right,list);
 			
 			return list;
 		}
