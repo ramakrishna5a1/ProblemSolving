@@ -1,7 +1,50 @@
+<!--Author:Ramakrishna Saidu-->
+<!--version:0.1-->
+
 <html>
 	<body>
 	<head>
 	<style>
+		.copy_data_num_title{
+			 display: flex;
+		}
+		
+		.copy_data_num{
+			display: inline-block;
+			background: #ffffff;
+			height: 25px;
+			width: 25px;
+			border-radius: 50%;
+			border: 2px solid #ff0700;
+			font-size:15px;
+			font-weight: bold;
+			text-align: center;
+			vertical-align: middle;
+ 
+		}
+		
+		.copytexttitle {
+			text-align: center;
+			color: white;
+			margin-left: 10px;
+			font-size: 20px;
+		}
+		.copytextarea {
+			background-color: white;
+			border: 2px solid #555555;
+			border-radius: 8px;			
+			color: black;
+			padding: 8px 16px;
+			text-align: left;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 13px;
+			margin: 4px 2px;
+			transition-duration: 0.4s;
+			width : 100%;
+			resize: none;			
+			height:65%;
+		}
 		.textareacopybtn {
 			background-color: white;
 			border: 2px solid #555555;	
@@ -15,24 +58,6 @@
 			transition-duration: 0.4s;
 			cursor: pointer;	
 		}
-		
-		.copytextarea {
-			background-color: white;
-			border: 2px solid #555555;	
-			color: black;
-			padding: 8px 16px;
-			text-align: left;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 13px;
-			margin: 4px 2px;
-			transition-duration: 0.4s;
-			cursor: pointer;
-			width : 100%;
-			resize: none;			
-			height:65%;
-		}
-		
 		.textareacopybtn:hover {
 			 background-color: #555555;
 			 color: white;
@@ -47,11 +72,12 @@
 		.grid-item{
 		  background-color: #9fabb5;
 		  border: 0.1px solid rgba(0, 0, 0, 0.2);
+		  box-shadow: 0 20px 40px -14px rgba(0,0,0,0.5);
+		  border-radius: 5px;			
 		  width: 300px;
 		  height:350px;		  
-		  padding: 10px;
-		  margin : 5px;
-		  font-size: 30px;
+		  padding: 0.5rem;
+		  margin: 1rem;
 		}
 	</style>
 
@@ -61,55 +87,86 @@
 	
 	<div class="grid-container">
 	</div>
-	
-	<script type = "text/javascript">
+	<script src="data.json"></script>
+	<script type = "text/javascript" >
 		createCards();	
+		LoadJsonData();
 		function createCards()
-		{			
-			var data = ["Length property of an Array returns the length\nof an Array. Length ",
-						"of an Array is always one more than\nthe highest index of an Array",
-						"hai","cd ./krishna/ok/*",""
+		{
+			var data = ["mount -uoexec /fs/storage\ncat /dev/screen/fordhmi/win-* | grep status\ncd /fs/rwdata/vnc\nmv svnc svnc\nsvnc\n",
+						"/fs/os/aarch64le/bin/log_capture_sync.sh",
+						"cd /fs/rwdata/\nscreenshot -file=connection_checklist.bmp",
+						"drm_ctrl -c DCMD_DRM_ROTATE_DISPLAY","root\n",
+						"drm_ctrl -c override_id DM12L",
+						"drm_ctrl -c override_id SDM13",
+						"drm_ctrl -c override_id SDM8",
+						"cd /fs/rwdata/\nscreenshot -file=file_name.bmp"
 						];
 						
 			var html_body_data = '';			
 			
-			for(var i=0;i<data.length-1;i++){
-				if(data[i].length != 0)
-					html_body_data += getSingleCardView(data[i],i);
+			for(var i=0;i<data.length;i++)
+			{
+				html_body_data += getSingleCardView(i,"Copy..............",data[i]);
 			}
-				
-				
-			html_body_data += getSingleCardView(data[i],i) //to remove the bottom space		
+			
 			document.getElementsByClassName("grid-container")[0].innerHTML = html_body_data;						
 		}
 		
-		function getSingleCardView(data,id)
+		function getSingleCardView(id,title,data)
 		{
 			return '<div class="grid-item">'+
+						'<div class="copy_data_num_title">'+
+							'<text  class="copy_data_num">'+(id+1)+'</text>'+
+							'<text id="copy_data_title'+id+'" class="copytexttitle">'+title+'</text>'+
+						'</div>'+
 						'<textarea id="copy_data_'+id+'" class="copytextarea">'+data+'</textarea>'+
 						'<br/> <br/> '+
 						'<button id="copy_button_'+id+'" onclick="copy_text_by_id('+id+')" class="textareacopybtn">Copy</button>'+
 					'</div>';
 		}
 		
-		function copy_text_by_id(id){
-		
+		function copy_text_by_id(id)
+		{
 			var copyTextarea = document.getElementById('copy_data_'+id);
 			copyTextarea.focus();
 			copyTextarea.select();
-
 			try 
 			{
-				var successful = document.execCommand('copy');
-				var msg = successful ? 'successful for ID:'+id : 'unsuccessful for ID:'+id;
+				var isCopySuccess = document.execCommand('copy');
+				var msg = isCopySuccess ? 'successful for ID:'+id : 'unsuccessful for ID:'+id;
 				console.log('Copying text command was ' + msg);
 			}
 			catch (err) 
 			{
-				console.log('Oops, unable to copy');
+				console.log('Oops..!, unable to copy:'+err);
 			}
 		}
 		
+		function LoadJsonData()
+		{
+			try
+			{
+				var jsonString = JSON.stringify(data);
+				
+				console.log(jsonString);
+				
+				var copy_data_array = JSON.parse(data);
+				console.log('Parsing JSON data Success..!');				
+				var html_body_data = '';
+				
+				for(var i=0;i<copy_data_array.length;i++)
+				{
+					console.log(copy_data_array[i].name+'//'+copy_data_array[i].age);	
+				}
+				//document.getElementsByClassName("grid-container")[0].innerHTML = html_body_data;
+			}
+			catch (err) 
+			{
+				console.log('JSON Parsing Error!\n'+err);
+			}
+		}
+
 	</script>
    </body>
 </html>
