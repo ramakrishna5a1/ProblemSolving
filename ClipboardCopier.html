@@ -25,7 +25,7 @@
 		
 		.copytexttitle {
 			text-align: center;
-			color: white;
+			color: black;
 			margin-left: 10px;
 			font-size: 20px;
 		}
@@ -70,7 +70,6 @@
 		  padding: 10px;
 		}
 		.grid-item{
-		  background-color: #9fabb5;
 		  border: 0.1px solid rgba(0, 0, 0, 0.2);
 		  box-shadow: 0 20px 40px -14px rgba(0,0,0,0.5);
 		  border-radius: 5px;			
@@ -80,7 +79,7 @@
 		  margin: 1rem;
 		}
 	</style>
-
+		  
 	</head>
 	<p id="lists">
 	</p>
@@ -93,9 +92,19 @@
 		LoadJsonData();
 		function createCards()
 		{
+			var title_data = ["VNC viewer",
+						"Log Capture",
+						"Rotate Display",
+						"Login Username",
+						"12 Inch Landscape",
+						"13 Inch",
+						"8 Inch",						
+						"Screenshot"
+						];
+			
+			
 			var data = ["mount -uoexec /fs/storage\ncat /dev/screen/fordhmi/win-* | grep status\ncd /fs/rwdata/vnc\nmv svnc svnc\nsvnc\n",
 						"/fs/os/aarch64le/bin/log_capture_sync.sh",
-						"cd /fs/rwdata/\nscreenshot -file=connection_checklist.bmp",
 						"drm_ctrl -c DCMD_DRM_ROTATE_DISPLAY","root\n",
 						"drm_ctrl -c override_id DM12L",
 						"drm_ctrl -c override_id SDM13",
@@ -107,7 +116,7 @@
 			
 			for(var i=0;i<data.length;i++)
 			{
-				html_body_data += getSingleCardView(i,"Copy..............",data[i]);
+				html_body_data += getSingleCardView(i,title_data[i],data[i]);
 			}
 			
 			document.getElementsByClassName("grid-container")[0].innerHTML = html_body_data;						
@@ -115,7 +124,8 @@
 		
 		function getSingleCardView(id,title,data)
 		{
-			return '<div class="grid-item">'+
+			
+			return '<div class="grid-item" style="background-color:'+getRandomColor()+';">'+
 						'<div class="copy_data_num_title">'+
 							'<text  class="copy_data_num">'+(id+1)+'</text>'+
 							'<text id="copy_data_title'+id+'" class="copytexttitle">'+title+'</text>'+
@@ -125,6 +135,19 @@
 						'<button id="copy_button_'+id+'" onclick="copy_text_by_id('+id+')" class="textareacopybtn">Copy</button>'+
 					'</div>';
 		}
+		
+		function getRandomColor() {
+            var letters = 'BCDEF'.split('');
+            var color = '#';
+            
+			for (var i = 0; i < 6; i++ ) 
+				color += letters[Math.floor(Math.random() * letters.length)];
+            
+			console.log(color)
+			
+			//color = '#9fabb5';
+            return color;
+        }
 		
 		function copy_text_by_id(id)
 		{
