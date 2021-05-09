@@ -1,5 +1,5 @@
 <!--Author:Ramakrishna Saidu-->
-<!--version:0.1-->
+<!--version:0.2-->
 
 <html>
 	<body>
@@ -7,27 +7,29 @@
 	<style>
 		.copy_data_num_title{
 			 display: flex;
+			 
 		}
-		
 		.copy_data_num{
-			display: inline-block;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			
+			height: 30px;
+			width: 30px;
+			
 			background: #ffffff;
-			height: 25px;
-			width: 25px;
 			border-radius: 50%;
 			border: 2px solid #ff0700;
-			font-size:15px;
-			font-weight: bold;
-			text-align: center;
-			vertical-align: middle;
- 
+			font-size:18px;
+			font-weight: bold;				
 		}
 		
-		.copytexttitle {
+		.copytexttitle {		
 			text-align: center;
 			color: black;
 			margin-left: 10px;
 			font-size: 20px;
+			font-weight: bold;
 		}
 		.copytextarea {
 			background-color: white;
@@ -58,6 +60,7 @@
 			transition-duration: 0.4s;
 			cursor: pointer;	
 		}
+
 		.textareacopybtn:hover {
 			 background-color: #555555;
 			 color: white;
@@ -77,51 +80,22 @@
 		  height:350px;		  
 		  padding: 0.5rem;
 		  margin: 1rem;
-		}
-	</style>
-		  
+		}		
+	</style>		  
 	</head>
 	<p id="lists">
 	</p>
 	
 	<div class="grid-container">
 	</div>
-	<script src="data.json"></script>
-	<script type = "text/javascript" >
-		createCards();	
-		LoadJsonData();
-		function createCards()
-		{
-			var title_data = ["Title-1",
-						"Title-2",
-					  	"Title-3",
-					  	"Title-4",
-					  	"Title-5",
-					  	"Title-6"
-						];
-			
-			
-			var data = ["Desc-1",
-						"Desc-2",
-						"Desc-3",
-						"Desc-4",
-						"Desc-5",
-						"Desc-6",
-						];
-						
-			var html_body_data = '';			
-			
-			for(var i=0;i<data.length;i++)
-			{
-				html_body_data += getSingleCardView(i,title_data[i],data[i]);
-			}
-			
-			document.getElementsByClassName("grid-container")[0].innerHTML = html_body_data;						
-		}
-		
+	<script src="data.jsonp"></script>
+	<script type = "text/javascript">
+		const JSON_DATA_TAG = 'json_copy_data';
+		var json_object;
+		readJsonData();
+
 		function getSingleCardView(id,title,data)
-		{
-			
+		{			
 			return '<div class="grid-item" style="background-color:'+getRandomColor()+';">'+
 						'<div class="copy_data_num_title">'+
 							'<text  class="copy_data_num">'+(id+1)+'</text>'+
@@ -133,13 +107,14 @@
 					'</div>';
 		}
 		
-		function getRandomColor() {
+		function getRandomColor()
+		{
             var letters = 'BCDEF'.split('');
             var color = '#';
             
 			for (var i = 0; i < 6; i++ ) 
 				color += letters[Math.floor(Math.random() * letters.length)];
-       
+          
 			//color = '#9fabb5';
             return color;
         }
@@ -147,44 +122,126 @@
 		function copy_text_by_id(id)
 		{
 			var copyTextarea = document.getElementById('copy_data_'+id);
-			copyTextarea.focus();
+			//copyTextarea.focus();
 			copyTextarea.select();
+			
 			try 
 			{
 				var isCopySuccess = document.execCommand('copy');
-				var msg = isCopySuccess ? 'successful for ID:'+id : 'unsuccessful for ID:'+id;
+				var msg = isCopySuccess ? 'successful for Card ID:'+(id+1) : 'unsuccessful for ID:'+(id+1);
 				console.log('Copying text command was ' + msg);
 			}
 			catch (err) 
 			{
 				console.log('Oops..!, unable to copy:'+err);
 			}
+			addJsonData("last","last one des");
 		}
 		
-		function LoadJsonData()
+		
+		function readJsonData()
 		{
 			try
 			{
-				var jsonString = JSON.stringify(data);
+				//window.localStorage.clear();				
+				var jsonString;
 				
-				console.log(jsonString);
-				
-				var copy_data_array = JSON.parse(data);
-				console.log('Parsing JSON data Success..!');				
-				var html_body_data = '';
-				
-				for(var i=0;i<copy_data_array.length;i++)
+				if(window.localStorage.getItem(JSON_DATA_TAG) != null)
 				{
-					console.log(copy_data_array[i].name+'//'+copy_data_array[i].age);	
+					jsonString = window.localStorage.getItem(JSON_DATA_TAG);
+					console.log('JSON data from Chrome storage.!');
 				}
-				//document.getElementsByClassName("grid-container")[0].innerHTML = html_body_data;
+				else
+				{
+					try
+					{
+						jsonString = JSON.stringify(json_copy_data);
+					}
+					catch(err)
+					{
+						if(jsonString == null)
+						{
+							jsonString = '[]';
+							json_object = JSON.parse(jsonString);	
+							jsonString = JSON.stringify(json_object);
+						}
+					}
+					
+					window.localStorage.setItem(JSON_DATA_TAG,jsonString);
+					console.log('JSON data from json file!');
+				}
+				
+				if(jsonString == null)
+				{
+					console.log('No Json data found....!');
+					return;
+				}
+				
+				json_object = JSON.parse(jsonString);
+				console.log(json_object);
+				console.log('Parsing JSON data Success..! Length:'+json_object.length);				
+				
+				/*
+				if there is no data available from Chrome storage and File storage
+				then go for adding data to the Chrome storage
+				*/
+				
+				if(json_object.length == 0)
+				{
+					addJsonData("last","last one des");	
+				}
+				
+				var html_body_data = '';
+				for(var i=0;i<json_object.length;i++)
+				{
+					//console.log(json_object[i].title+'\n'+json_object[i].command);	
+					html_body_data += getSingleCardView(i,json_object[i].title,json_object[i].command);
+				}
+				
+				document.getElementsByClassName("grid-container")[0].innerHTML = html_body_data;
+				
 			}
 			catch (err) 
 			{
 				console.log('JSON Parsing Error!\n'+err);
-			}
+			}			
 		}
-
-	</script>
-   </body>
+		
+		function addJsonData(title,command)
+		{
+			var jsonString = '';
+			
+			if(json_object != null)
+			{
+				json_object.push({"title":title,"command":command})
+				jsonString = JSON.stringify(json_object);
+				console.log("Json object not null.");								
+			}
+			else
+			{
+				jsonString = '[{"title":"'+title+'","command":"'+command+'"}]';
+				json_object = JSON.parse(jsonString);
+				
+				jsonString = JSON.stringify(json_object);					
+				console.log(jsonString);
+				
+				//testing purpose only
+				json_object = JSON.parse(jsonString);
+				console.log(json_object.length);
+				console.log('Parsing JSON data Success..! Length:'+json_object.length);	
+			}
+			
+			try
+			{
+				window.localStorage.setItem(JSON_DATA_TAG, jsonString);
+				console.log('Data updation success');
+			}
+			catch
+			{
+				console.log('Oops..!, Data updation failure:'+err);
+			}
+		}				
+		</script>
+	   </body>
 </html>
+
