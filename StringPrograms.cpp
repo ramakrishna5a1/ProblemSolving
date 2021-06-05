@@ -9,9 +9,9 @@ class string_programs
     public:
         void swap(string *c1,string *c2)
         {
-            string *t = c1;
-            c1 = c2;
-            c2 = t;
+            	string *t = c1;
+            	c1 = c2;
+            	c2 = t;
 		cout<<*c1<<*c2<<endl;	
 	}
 	
@@ -32,9 +32,17 @@ class string_programs
 		}
 	}
 
-	char get_max_char(char *ch){
-		return 'N';	
+	int get_max_char(char *ch,int len)
+	{
+		int maxCount=0,lookup[26] = {0};
+		
+		for(int i=0;i<len;i++){
+			lookup[(int)(*(ch+i))-97]++;		
+		}
+		for(int i=0;i<26;i++) maxCount = max(maxCount,lookup[i]);
+		return maxCount;	
 	}
+
 };
 
 int main()
@@ -48,22 +56,8 @@ int main()
 	sp.check_palindrome("aba");
 	sp.check_palindrome("krishna");
 	
-	string check;
-	
-	check.append("kri");
-	cout<<check<<endl;
-
-	check = "";
-	cout<<check<<endl;
-
-	check.append("hello rk");
-	cout<<check<<endl;
-
-	check.clear();
-	cout<<check<<endl;	
-
-	string letters = "aaaccaasdsdsdaa";
-	cout<<"Repeating char: "+sp.get_max_char(&letters[0])<<endl;
-
+	char letters[] = "aaaccaasdsdsdaa";
+	int len = sizeof letters/sizeof(letters[0]);
+	cout<<"Repeating char: "<<sp.get_max_char(&letters[0],len)<<endl;
 	return 0;
 }
