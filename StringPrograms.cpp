@@ -43,7 +43,21 @@ class string_programs
 		return maxCount;	
 	}
 
+
+	int get_str_len(const char *str)
+	{
+		int i=0,len = 0;
+
+		while(*(str+i) != '\0'){ 
+			len++;
+			i++;
+		}
+
+		cout<<"Length: "<<len<<endl;
+		return len;
+	}
 };
+
 
 int main()
 {
@@ -57,11 +71,7 @@ int main()
 	sp.check_palindrome("krishna");
 	
 	char letters[] = "aaaccaasdsdsdaa";
-	int len = sizeof letters/sizeof(letters[0]);
+	int len = sp.get_str_len(letters);
 	cout<<"Repeating char: "<<sp.get_max_char(&letters[0],len)<<endl;
 	return 0;
-/*
- * added some comments*/
-
-
 }
