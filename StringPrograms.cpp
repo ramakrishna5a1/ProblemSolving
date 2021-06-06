@@ -60,4 +60,8 @@ int main()
 	int len = sizeof letters/sizeof(letters[0]);
 	cout<<"Repeating char: "<<sp.get_max_char(&letters[0],len)<<endl;
 	return 0;
+/*
+ * added some comments*/
+
+
 }
