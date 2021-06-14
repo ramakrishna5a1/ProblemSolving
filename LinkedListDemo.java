@@ -130,5 +130,18 @@ class LinkedListDemo
 			
 			return curr;
 		}
+
+
+		Node mergeLinkedList(Node head1,Node head2){
+			Node resultHead = null;
+			Node ptr1 = head1,ptr2=head2;
+
+			while(ptr1.next!=null && ptr2.next!=null)
+			{
+					
+			}
+				
+			return resultHead;
+		}
 	}
 }

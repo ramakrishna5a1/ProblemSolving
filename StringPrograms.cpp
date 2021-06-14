@@ -9,10 +9,9 @@ class string_programs
     public:
         void swap(string *c1,string *c2)
         {
-            	string *t = c1;
-            	c1 = c2;
-            	c2 = t;
-		cout<<*c1<<*c2<<endl;	
+            	string t = *c1;
+            	*c1 = *c2;
+            	*c2 = t;
 	}
 	
 	void check_palindrome(string str)
@@ -36,9 +35,9 @@ class string_programs
 	{
 		int maxCount=0,lookup[26] = {0};
 		
-		for(int i=0;i<len;i++){
+		for(int i=0;i<len;i++)
 			lookup[(int)(*(ch+i))-97]++;		
-		}
+		
 		for(int i=0;i<26;i++) maxCount = max(maxCount,lookup[i]);
 		return maxCount;	
 	}
@@ -56,6 +55,13 @@ class string_programs
 		cout<<"Length: "<<len<<endl;
 		return len;
 	}
+
+	void reverse_recursion_string(const char *str)
+	{
+		if(*str == '\0') return;
+		reverse_recursion_string(str + 1);
+		cout<<*str<<" ";	
+	}
 };
 
 
@@ -63,9 +69,9 @@ int main()
 {
 	string_programs sp;	
 	string str1="krishna", str2 = "rama";
-	
+	cout<<str1<<" / "<<str2<<endl;
 	sp.swap(&str1,&str2);
-	cout<<str1<<str2<<endl;
+	cout<<str1<<" / "<<str2<<endl;
 
 	sp.check_palindrome("aba");
 	sp.check_palindrome("krishna");
@@ -73,5 +79,20 @@ int main()
 	char letters[] = "aaaccaasdsdsdaa";
 	int len = sp.get_str_len(letters);
 	cout<<"Repeating char: "<<sp.get_max_char(&letters[0],len)<<endl;
+	
+	string str3 = "krishna";
+	char *char_str3 = &str3[0];
+	
+	int i=0;
+	while(*(char_str3 + i)){
+		cout<<*(char_str3 + i);
+		i++;
+	}
+	
+	cout<<endl;
+	sp.reverse_recursion_string(&str3[0]);
+	cout<<endl;
+
 	return 0;
 }
+
