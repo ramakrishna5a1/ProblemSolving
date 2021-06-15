@@ -16,7 +16,7 @@ class string_programs
             	*c2 = t;
 	}
 	
-	void check_palindrome(string str)
+	void check_palindrome(const string str)
 	{
 		int len = str.length();
 
@@ -33,7 +33,7 @@ class string_programs
 		}
 	}
 
-	int get_max_char(char *ch,int len)
+	int get_max_char(const char *ch,int len)
 	{
 		int maxCount=0,lookup[26] = {0};
 		
@@ -75,6 +75,21 @@ class string_programs
 
 		cout<<"\n";
 	}
+
+	void sort_string_chars(string str)
+	{
+		cout<<"sorting string: "<<str;
+		//sort(str.begin(),str.end());
+		
+		int len = str.size();
+		cout<<"\nlen of str: "+to_string(len)<<endl;
+
+		sort(&str[0],&str[len]);		
+		
+		cout<<"\n"+str+"\n";
+		
+
+	}
 };
 
 
@@ -109,7 +124,8 @@ int main()
 	cout<<"\nSorting the vector of Strings:\n";
 	vector<string> names {"krishna","rama","bro","dude","happy","sad"};
 	sp.sort_strings(names);
-	
+
+	sp.sort_string_chars("ramakrishna");	
 	return 0;
 }
 
