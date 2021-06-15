@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -62,6 +64,17 @@ class string_programs
 		reverse_recursion_string(str + 1);
 		cout<<*str<<" ";	
 	}
+
+	void sort_strings(vector<string> names)
+	{
+		sort(names.begin(),names.end());
+		for(int i=0;i<names.size();i++)
+		{
+			cout<<names[i]<<" ";
+		}
+
+		cout<<"\n";
+	}
 };
 
 
@@ -92,7 +105,11 @@ int main()
 	cout<<endl;
 	sp.reverse_recursion_string(&str3[0]);
 	cout<<endl;
-
+	
+	cout<<"\nSorting the vector of Strings:\n";
+	vector<string> names {"krishna","rama","bro","dude","happy","sad"};
+	sp.sort_strings(names);
+	
 	return 0;
 }
 
