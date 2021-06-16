@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -78,6 +79,8 @@ class string_programs
 
 	void sort_string_chars(string str)
 	{
+		//using predefined methods:
+		/*
 		cout<<"sorting string: "<<str;
 		//sort(str.begin(),str.end());
 		
@@ -87,11 +90,52 @@ class string_programs
 		sort(&str[0],&str[len]);		
 		
 		cout<<"\n"+str+"\n";
-		
+		*/
 
+		//using hashing method
+
+		int ar[26]  {0};
+		
+		for(int i=0;i<str.size();i++)
+		{
+			ar[str[i] - 'a']++;
+		}
+		
+		for(int i=0;i<26;i++)
+		{
+			while(ar[i]>0)
+			{
+				cout<<(char)(97+i);
+				ar[i]--;
+			}
+		}		
+	}
+
+	void string_permutations(string a,int l,int r)
+	{
+		if(l == r)
+		{
+			cout<<a<<endl;
+			return;
+		}
+
+		for(int i=l;i<=r;i++)
+		{	
+			a = swap_chars(a,l,i);
+			string_permutations(a,l+1,r);
+			a = swap_chars(a,l,i);
+		}
+	}
+
+	string swap_chars(string a,int i,int j)
+	{
+		char temp = a[i];
+		a[i] = a[j];
+		a[j] = temp;
+
+		return a;
 	}
 };
-
 
 int main()
 {
@@ -112,7 +156,8 @@ int main()
 	char *char_str3 = &str3[0];
 	
 	int i=0;
-	while(*(char_str3 + i)){
+	while(*(char_str3 + i))
+	{
 		cout<<*(char_str3 + i);
 		i++;
 	}
@@ -124,8 +169,13 @@ int main()
 	cout<<"\nSorting the vector of Strings:\n";
 	vector<string> names {"krishna","rama","bro","dude","happy","sad"};
 	sp.sort_strings(names);
-
-	sp.sort_string_chars("ramakrishna");	
+	
+	sp.sort_string_chars("ramakrishna");
+	
+	cout<<"\nPermutations of a string:\n"<<endl;
+	string permute_string = "ABC";
+	sp.string_permutations(permute_string,0,permute_string.length()-1);	
+	cout<<endl;
 	return 0;
 }
 
