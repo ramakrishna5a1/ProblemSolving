@@ -135,6 +135,39 @@ class string_programs
 
 		return a;
 	}
+
+	bool anagrams_or_not(std::string str1,std::string str2)
+	{	
+		int len1 = str1.length();
+		int len2 = str2.length();
+		
+		int *arr = new int[26];	
+
+		if(len1 != len2)
+		{
+			return false;
+		}
+		
+		int count[26] {0};
+		
+		for(int i=0;i<len1;i++)
+		{
+			count[(int)(str1[i]-'a')]++;
+		}
+
+		for(int i=0;i<len2;i++)
+		{
+			count[(int)(str1[i]-'a')]--;
+		}
+
+		for(int i=0;i<26;i++)
+		{
+			if(count[i] != 0)
+				return false;
+		}
+
+		return true;
+	}
 };
 
 int main()
@@ -176,6 +209,11 @@ int main()
 	string permute_string = "ABC";
 	sp.string_permutations(permute_string,0,permute_string.length()-1);	
 	cout<<endl;
+	
+	std::cout<<"Anagrams:\n";
+	std::string anagram_str1 = "ramkrishna";
+	std::string anagram_str2 = "mar";
+	std::cout<<"is two strings anagrams?: "<<sp.anagrams_or_not(anagram_str1,anagram_str2)<<endl;
 	return 0;
 }
 
