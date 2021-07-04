@@ -168,6 +168,48 @@ class string_programs
 
 		return true;
 	}
+	
+	bool consists_only_digits(const char *ptr)
+	{
+		int len = std::strlen(ptr);
+		
+		for(int i=0;i<len;i++)
+		{
+			char digit = *(ptr+i);
+			if(digit < '0' ||  digit > '9')
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	void first_nonrepeat_character(std::string line)
+	{
+		int i,look_up[26] {0};
+		
+		//ex = abcabbdkjfskjdd
+
+		for(i=0;i<line.length();i++)
+		{
+			look_up[(int)(line[i]-'a')]++;
+		}
+
+		for(i=0;i<line.length();i++)
+		{
+			if(look_up[(int)(line[i]-'a')] == 1)
+			{
+				break;
+			}	
+		}
+
+		if(i != line.length())
+		{	
+			std::cout<<"\nFirst Non-Repeat Character: "<<line[i]<<std::endl;
+	
+		}
+	}
 };
 
 int main()
@@ -214,6 +256,15 @@ int main()
 	std::string anagram_str1 = "ramkrishna";
 	std::string anagram_str2 = "mar";
 	std::cout<<"is two strings anagrams?: "<<sp.anagrams_or_not(anagram_str1,anagram_str2)<<endl;
+	
+	string only_digits = "955003993a0";
+	std::cout<<"consists only digits: ";
+	std::cout<<sp.consists_only_digits(&only_digits[0])<<std::endl;
+	
+	sp.first_nonrepeat_character("abcabbdkjfskjdd");
 	return 0;
 }
+
+
+
 
