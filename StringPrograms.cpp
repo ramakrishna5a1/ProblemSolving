@@ -210,6 +210,30 @@ class string_programs
 	
 		}
 	}
+
+	void max_adjacent_repeated_char(/*std::string& ref*/)
+	{
+		std::string ref = "abcaab";
+		int i=0,count=0,max_count=0,len = ref.length()-1;
+		char max_repeat_char = '-';
+
+		while(i<len)
+		{
+			if(ref[i] == ref[i+1])
+				count = (count == 0)? 2 : (count+1);
+			else if(count > max_count)
+			{
+				max_repeat_char = ref[i];
+				max_count = count;
+				count = 0;
+			}
+			
+			i++;
+		}
+		std::cout<<max_repeat_char<<std::endl;
+		std::string line = (max_count == 0)? ("No character repeated adajacently.") : ("Max adjacent repeated character is: "+std::string(max_repeat_char));	
+		std::cout<<"\n"+line+"\n";
+	}
 };
 
 int main()
@@ -260,11 +284,9 @@ int main()
 	string only_digits = "955003993a0";
 	std::cout<<"consists only digits: ";
 	std::cout<<sp.consists_only_digits(&only_digits[0])<<std::endl;
-	
+
+	sp.max_adjacent_repeated_char();
+
 	sp.first_nonrepeat_character("abcabbdkjfskjdd");
 	return 0;
 }
-
-
-
-
