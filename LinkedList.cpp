@@ -130,32 +130,70 @@ class LinkedList
     }
         
     bool delete_at_position(int pos)
-    {		
-		return true;    
+    {	
+		Node *deleting_element = nullptr;
+		
+		if(this->head == nullptr)
+		{
+			return false;	
+		}
+		else if(pos == 1 && this->head->next == nullptr)
+		{
+			deleting_element = head;
+			size--;
+			delete deleting_element;
+		}
+		else if(pos == size && delete_element())
+		{
+			deleting_element == nullptr;
+		}
+		else
+		{
+			Node *temp = head;
+			for(int i=0;i<pos;i++)
+			{
+				temp = temp->next;
+			}
+			deleting_element = temp->next;
+			temp->next = temp->next->next;
+			size--;
+			delete deleting_element;
+		}
+		
+		return (deleting_element == nullptr);    
     }
 		
     bool delete_element()
     {
 		Node *deleting_element = nullptr;
+		
 		if(this->head == nullptr)
 		{
 			return false;	
 		}
-
+		else
+		/*
+			if head is the only node in the list then 
+			remove the head itself
+		*/
 		if(this->head->next == nullptr)
 		{
 			deleting_element = head;
-			delete this->head;
+			size--;
+			delete deleting_element;
 		}
-		
-		Node *temp = this->head;
-		while(temp->next->next != nullptr)
-			temp = temp->next;
-		
-		deleting_element = temp->next;
-		delete temp->next;
-
-        return (deleting_element == nullptr)    
+		else
+		{
+			Node *temp = this->head;
+			while(temp->next->next != nullptr)
+				temp = temp->next;
+			
+			deleting_element = temp->next;
+			temp->next = nullptr;
+			size--;
+			delete deleting_element;
+		}			
+        	return (deleting_element == nullptr)    
     }
         
     bool reverse_list()
@@ -181,8 +219,7 @@ class LinkedList
 			current->next = prev;
 			current = current->next;
 		}
-		
-        head = prev;
+        	head = prev;
 		return true;    
     }
 	
@@ -207,7 +244,6 @@ int main()
 			std::cout<<"error occured while inserting"<<std::endl;	
 		}
 	}
-
 	list->display_list();
 	std::cout<<"Size: "<<list->get_size()<<std::endl;
 	list->add_node(4,45);
