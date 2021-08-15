@@ -21,10 +21,10 @@ class LinkedList
     public:
 	int size = 0;
 
-        void display_list()
+    void display_list()
+    {
+        if(this->head == nullptr)
         {
-            	if(this->head == nullptr)
-            	{
 			cout<<"No elements found..."<<endl;
 			return;
 		}
@@ -37,13 +37,13 @@ class LinkedList
 		}
 			
 		cout<<temp->data<<endl;
-        }
+    }
         
 	/*
 		@pos consider this as in zero based index
 	*/
-        bool add_node(int pos, int data)
-        {
+    bool add_node(int pos, int data)
+	{
 		pos = pos-1;
 		bool is_inserted = false;
 		if(pos < 0 || pos > (size-1))
@@ -51,12 +51,13 @@ class LinkedList
 			std::cout<<"unable to insert at the given postion as size is: "<<size<<std::endl;
 			return false;
 		}
-            	if(this->head == nullptr)
-            	{
-                	head = new Node(data,nullptr);
-                	size++;
-                	is_inserted = true; 
-            	}
+        
+		if(this->head == nullptr)
+        {
+            head = new Node(data,nullptr);
+			size++;
+            is_inserted = true; 
+        }
 			
 		//insert at the begining
 		if(pos == 0)
@@ -101,65 +102,128 @@ class LinkedList
 		}
 
 		return false;
-        }
+    }
           
-        bool add_node(int data)
+    bool add_node(int data)
+    {
+        Node *new_node = new Node(data,nullptr);
+        
+		if(head == nullptr)
         {
-            	Node *new_node = new Node(data,nullptr);
-            
-            	if(head == nullptr)
-            	{
-                	head = new_node;
-               		size++;
-                	return true; 
-            	}
+            head = new_node;
+            size++;
+            return true; 
+        }
 			
-            	Node *temp = head;
+        Node *temp = head;
 		while(temp->next != nullptr)
 			temp = temp->next;
 		temp->next = new_node;
-           	if(new_node != nullptr)
+        
+		if(new_node != nullptr)
 		{
 			size++;
 			return true;
 		}
 
-            	return false;
-        }
+        return false;
+    }
         
-        bool delete_at_position(LinkedList list, int pos)
-        {
-            return true;    
-        }
-		
-        bool delete_element()
-        {
+    bool delete_at_position(int pos)
+    {	
 		Node *deleting_element = nullptr;
+		
 		if(this->head == nullptr)
 		{
 			return false;	
 		}
-
+		else if(pos == 1 && this->head->next == nullptr)
+		{
+			deleting_element = head;
+			size--;
+			delete deleting_element;
+		}
+		else if(pos == size && delete_element())
+		{
+			deleting_element == nullptr;
+		}
+		else
+		{
+			Node *temp = head;
+			for(int i=0;i<pos;i++)
+			{
+				temp = temp->next;
+			}
+			deleting_element = temp->next;
+			temp->next = temp->next->next;
+			size--;
+			delete deleting_element;
+		}
+		
+		return (deleting_element == nullptr);    
+    }
+		
+    bool delete_element()
+    {
+		Node *deleting_element = nullptr;
+		
+		if(this->head == nullptr)
+		{
+			return false;	
+		}
+		else
+		/*
+			if head is the only node in the list then 
+			remove the head itself
+		*/
 		if(this->head->next == nullptr)
 		{
 			deleting_element = head;
-			delete this->head;
+			size--;
+			delete deleting_element;
+		}
+		else
+		{
+			Node *temp = this->head;
+			while(temp->next->next != nullptr)
+				temp = temp->next;
+			
+			deleting_element = temp->next;
+			temp->next = nullptr;
+			size--;
+			delete deleting_element;
+		}			
+        return (deleting_element == nullptr);    
+    }
+        
+    bool reverse_list()
+    {
+		if(head == nullptr)
+		{
+			std::cout<<"no elements in the list";
+			return false; 
 		}
 		
-		Node *temp = this->head;
-		while(temp->next->next != nullptr)
-			temp = temp->next;
-		
-		deleting_element = temp->next;
-		delete temp->next;
+		Node *prev = nullptr,*current = head,*next = nullptr;
 
-            	return (deleting_element == nullptr)    
-        }
-        
-        bool reverse_list()
-        {
-            return head;    
-        }
+		/*
+		 *0  1  2  3  4 
+		 *1->2->3->4->5
+		 *1st iteration: {nullptr}<-{1} {2}->{3}->{4}->{5}
+		 *2nd iteration: {nullptr}<-{1}<-{2} {3}->{4}->{5}				
+		 */
+		
+		while(current != nullptr)
+		{
+			next = current->next;
+			current->next = prev;
+			prev = current;
+			current = next;
+		}
+		
+        head = prev;
+		return (head != nullptr);    
+    }
 	
 	int get_size()
 	{
@@ -188,5 +252,12 @@ int main()
 	list->add_node(4,45);
     	list->display_list();
 	std::cout<<"Size: "<<list->get_size()<<std::endl;
+	
+	list->reverse_list();
+	list->display_list();
+
+	list->reverse_list();
+	list->display_list();
+	
 	return 0;
 }
