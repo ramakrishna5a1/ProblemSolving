@@ -126,7 +126,7 @@ class LinkedList
 			return true;
 		}
 
-       	return false;
+       		return false;
     	}
         
     	bool delete_at_position(int pos)
@@ -232,7 +232,8 @@ class LinkedList
 
     private:
         //static int size;
-        Node *head = nullptr;        
+        Node *head = nullptr;
+	Node *end = nullptr;	
 };
 
 int main()
