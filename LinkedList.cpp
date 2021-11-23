@@ -164,13 +164,12 @@ class LinkedList
 		
     	bool delete_element()
     	{
-		Node *deleting_element = nullptr;
+		Node *deleted_element = nullptr;
 		
 		if(this->head == nullptr)
 		{
 			return false;	
 		}
-		else
 		/*
 			if head is the only node in the list then 
 			remove the head itself
@@ -179,19 +178,18 @@ class LinkedList
 		{
 			deleting_element = head;
 			size--;
-			delete deleting_element;
 		}
 		else
 		{
 			Node *temp = this->head;
 			while(temp->next->next != nullptr)
 				temp = temp->next;
-			
-			deleting_element = temp->next;
+			end = temp;
+			deleted_element = temp->next;
 			temp->next = nullptr;
 			size--;
-			delete deleting_element;
-		}			
+		}
+		delete deleted_element;
         	return (deleting_element == nullptr);    
     	}
         
