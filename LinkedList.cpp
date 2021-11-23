@@ -55,6 +55,7 @@ class LinkedList
 		if(this->head == nullptr)
         	{
             		head = new Node(data,nullptr);
+			end = head;
 			size++;
             		is_inserted = true; 
         	}
@@ -70,10 +71,8 @@ class LinkedList
 		//insert at the end
 		if(pos == (size-1))
 		{
-			Node *temp = head;
-			while(temp->next != nullptr)
-				temp = temp->next;
-			temp->next = new Node(data,nullptr);	
+			end->next = new Node(data,nullptr);	
+			end = end->next;
 			is_inserted = true;
 		}
 			
