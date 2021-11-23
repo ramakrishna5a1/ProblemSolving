@@ -176,7 +176,7 @@ class LinkedList
 		*/
 		if(this->head->next == nullptr)
 		{
-			deleting_element = head;
+			deleted_element = head;
 			size--;
 		}
 		else
@@ -190,7 +190,7 @@ class LinkedList
 			size--;
 		}
 		delete deleted_element;
-        	return (deleting_element == nullptr);    
+        	return (deleted_element == nullptr);    
     	}
         
     	bool reverse_list()
